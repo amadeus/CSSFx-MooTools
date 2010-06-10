@@ -47,6 +47,7 @@ body {
 }
 
 .Template.cube .face {
+	-webkit-transform-origin:50% 50% 0px;
 	position:absolute;
 	top:0;
 	left:0;
@@ -54,7 +55,20 @@ body {
 	cursor:pointer;
 }
 
+/*
+.Template.cube .shadow {
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:#000;
+	-webkit-transform-origin:50% 50% 0px;
+	-webkit-backface-visibility:visible;
+	opacity:.5;
+}
+*/
+
 .Template.cube .face h1 {
+
 	color:#fff;
 	margin-top:-50px;
 	font-size:100px;
@@ -66,6 +80,14 @@ body {
 	top:50%;
 	text-transform:lowercase;
 	text-shadow:0 1px 0 #000;
+}
+
+.Template.cube .face h1 small {
+	display:block;
+	font-size:18px;
+	text-transform:uppercase;
+	opacity:.5;
+	text-shadow:none;
 }
 
 .Template.cube .face:active h1 {

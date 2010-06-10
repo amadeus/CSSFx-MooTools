@@ -21,10 +21,10 @@ var Cube = new Class({
 		this.faces[1] = this.createFace('two');
 		this.faces[2] = this.createFace('three');
 		this.faces[3] = this.createFace('four');
-		
+
 		this.addAnimations();
 	},
-	
+
 	addAnimations:function(){
 		this.animation = new CSSAnimations(this.template);
 
@@ -96,7 +96,7 @@ var Cube = new Class({
 	createFace:function(num){
 		return new Element('div',{
 			'class':'face '+num,
-			html:'<h1>This is face '+num+'</h1>',
+			html:'<h1>This is face '+num+' <small>click to advance</small></h1>',
 			styles:{
 				width:this.windowInfo.x,
 				height:this.windowInfo.y,
@@ -150,17 +150,5 @@ var Cube = new Class({
 			this.animation.start('rotateThree');
 		if(val==='four')
 			this.animation.start('rotateFour');
-	},
-
-	getAnim:function()
-	{
-		var ss = document.styleSheets;
-		for (var i = 0; i < ss.length; ++i) {
-			for (var j = 0; j < ss[i].cssRules.length; ++j) {
-				if (ss[i].cssRules[j].type == window.CSSRule.WEBKIT_KEYFRAMES_RULE && ss[i].cssRules[j].name == 'rotate')
-					return ss[i].cssRules[j];
-			}
-		}
-		return null;
 	}
 });
