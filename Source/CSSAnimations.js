@@ -4,7 +4,7 @@
 		- Only tested in Safari 5 and iPhone. Seems broken on iPad Safari, for some reason
 */
 var CSSAnimations = new Class({
-	Implements:Options,
+	Implements:[Options,Events],
 	options:{},
 	initialize:function(el){
 		(function(){
@@ -18,20 +18,21 @@ var CSSAnimations = new Class({
 		}).apply(window);
 
 		this.body = $(document.body);
-		this.head = $$('head')[0];
+
+		new Element('style',{ type:'text/css' }).inject($$('head')[0]);
+
+		this.stylesheet = document.styleSheets[document.styleSheets.length-1];
 
 		this.addAnimation = this.addAnimation.bind(this);
 		this.removeAnimation = this.removeAnimation.bind(this);
-		this.start = this.start.bind(this);
 		this.animationStart = this.animationStart.bindWithEvent(this);
 		this.animationEnd = this.animationEnd.bindWithEvent(this);
+		this.start = this.start.bind(this);
 
 		this.el = $(el).addEvents({
 			animationStart:this.animationStart,
 			animationEnd:this.animationEnd
 		});
-
-
 	},
 
 	start:function(animation){
@@ -41,6 +42,8 @@ var CSSAnimations = new Class({
 
 	animationStart:function(event){
 		this.animating = true;
+		if(this.Animations[event.event.animationName].onStart)
+			this.Animations[event.event.animationName].onStart();
 	},
 	/*
 	animIteration:function(){
@@ -80,10 +83,9 @@ var CSSAnimations = new Class({
 
 		this.Animations[name].shortcut = this.generateShortcut(name);
 
-		this.Animations[name].stylesheet = new Element('style',{
-			type:'text/css',
-			html:this.Animations[name].string
-		}).inject(this.head);
+		this.Animations[name].ruleIndex = this.stylesheet.cssRules.length;
+
+		this.stylesheet.insertRule(this.Animations[name].string,this.Animations[name].ruleIndex);
 	},
 
 	generateShortcut:function(name){
@@ -100,7 +102,7 @@ var CSSAnimations = new Class({
 		var keyframeString = '@-webkit-keyframes '+name+' {';
 
 		$each(keyframes,function(obj,index){
-			keyframeString+=index+'%{';
+			keyframeString+=index+'% {';
 			$each(obj,function(value,key){
 				keyframeString+=key+':'+value+';';
 			},this);
@@ -115,7 +117,7 @@ var CSSAnimations = new Class({
 	removeAnimation:function(key){
 		if(!this.Animations[key]) return false;
 
-		this.Animations[key].stylesheet.destroy();
+		this.stylesheet.deleteRule(this.Animations[key].ruleIndex);
 		delete this.Animations[key];
 
 		return true;

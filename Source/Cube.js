@@ -38,7 +38,7 @@ var Cube = new Class({
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
-			onComplete:(function(){
+			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-90deg)');
 			}).bind(this),
 			keyframes:{
@@ -54,7 +54,7 @@ var Cube = new Class({
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
-			onComplete:(function(){
+			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-180deg)');
 			}).bind(this),
 			keyframes:{
@@ -70,7 +70,7 @@ var Cube = new Class({
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
-			onComplete:(function(){
+			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-270deg)');
 			}).bind(this),
 			keyframes:{
@@ -86,7 +86,7 @@ var Cube = new Class({
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
-			onComplete:(function(){
+			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(0deg)');
 			}).bind(this),
 			keyframes:{
