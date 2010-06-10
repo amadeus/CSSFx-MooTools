@@ -36,7 +36,7 @@ var Cube = new Class({
 		this.animation.addAnimation('rotateOne',{
 			duration:'1000ms',
 			easing:'ease-in-out',
-			iteration:2,
+			iteration:1,
 			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-90deg)');
 			}).bind(this),

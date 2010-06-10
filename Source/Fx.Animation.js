@@ -1,6 +1,6 @@
 /**
 	Fx.Animation [class]
-		- A class to generate and store css animations
+		- A class to generate and store css animations and events
 		- Only tested in Safari 5, iPad and iPhone
 */
 Fx.Animation = new Class({

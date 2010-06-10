@@ -1,45 +1,25 @@
 /**
 	Fx.AnimateEl [class]
-		- A class to execute CSS animations on an element
+		- A class to execute CSS animations and events on an element
 		- Requires Fx.Animation.js
 		- Only tested in Safari 5, iPad and iPhone
 */
 Fx.AnimateEl = new Class({
 	Implements:Options,
 
-	options:{
-		chain:'ignore'
-	},
-
+	options:{ chain:'ignore' }, // Chaining has not yet been implemented...
 
 	Animations:{},
 
 	animationStatus:{
+
 		running:false,
+
 		name:null
 	},
 
 	initialize:function(el){
-		// Add Webkit Animation Events
-		(function(){
-			if(
-				Element.NativeEvents.animationStart &&
-				Element.NativeEvents.animationIteration &&
-				Element.NativeEvents.animationEnd
-			) return;
-
-			Element.NativeEvents.animationStart = 2;
-			Element.NativeEvents.animationIteration = 2;
-			Element.NativeEvents.animationEnd = 2;
-
-			Element.NativeEvents.webkitAnimationStart = 2;
-			Element.NativeEvents.webkitAnimationIteration = 2;
-			Element.NativeEvents.webkitAnimationEnd = 2;
-
-			Element.Events.set('animationStart', { base:'webkitAnimationStart' });
-			Element.Events.set('animationIteration', { base:'webkitAnimationIteration' });
-			Element.Events.set('animationEnd', { base:'webkitAnimationEnd' });
-		}).apply(window);
+		this.addNativeAnimationEvents.apply(window);
 
 		// Add new stylesheet for keyframe rules
 		new Element('style',{ type:'text/css' }).inject($$('head')[0]);
@@ -161,5 +141,25 @@ Fx.AnimateEl = new Class({
 		delete this.Animations[anim];
 
 		return this;
+	},
+
+	addNativeAnimationEvents:function(){
+		if(
+			Element.NativeEvents.animationStart &&
+			Element.NativeEvents.animationIteration &&
+			Element.NativeEvents.animationEnd
+		) return;
+
+		Element.NativeEvents.animationStart = 2;
+		Element.NativeEvents.animationIteration = 2;
+		Element.NativeEvents.animationEnd = 2;
+
+		Element.NativeEvents.webkitAnimationStart = 2;
+		Element.NativeEvents.webkitAnimationIteration = 2;
+		Element.NativeEvents.webkitAnimationEnd = 2;
+
+		Element.Events.set('animationStart', { base:'webkitAnimationStart' });
+		Element.Events.set('animationIteration', { base:'webkitAnimationIteration' });
+		Element.Events.set('animationEnd', { base:'webkitAnimationEnd' });
 	}
 });
