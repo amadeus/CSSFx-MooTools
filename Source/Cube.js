@@ -31,12 +31,12 @@ var Cube = new Class({
 	},
 
 	addAnimations:function(){
-		this.animation = new Fx.Animations(this.template);
+		this.animation = new Fx.AnimateEl(this.template);
 
 		this.animation.addAnimation('rotateOne',{
-			duration:'10000ms',
+			duration:'1000ms',
 			easing:'ease-in-out',
-			iteration:1,
+			iteration:2,
 			onStart:(function(){
 				this.template.setStyle('webkitTransform','translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-90deg)');
 			}).bind(this),

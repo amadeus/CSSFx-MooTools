@@ -1,76 +1,10 @@
 /**
-	CSSAnimations [class]
-		- A class to generate and execute CSS Animations
+	Fx.AnimateEl [class]
+		- A class to execute CSS animations on an element
+		- Requires Fx.Animation.js
 		- Only tested in Safari 5, iPad and iPhone
 */
-Fx.Animation = new Class({
-	Implements:[Options,Events],
-
-	options:{
-		duration:1000,
-		iteration:1,
-		easing:'linear'
-		/*
-			Keyframe API:
-			keyframes:{
-				precentage(number as string):properties(string),
-				precentage(number as string):properties(string)
-			}
-
-			Events:
-			onStart:(function),
-			onIterate:(function), // Not implemented
-			onComplete:(function),
-			onCancel:(function)
-		*/
-	},
-
-	animating:false,
-
-	initialize:function(name,options){
-		this.setOptions(options);
-
-		this.name = name;
-
-		if($type(this.options.duration)==='number')
-			this.options.duration+='ms';
-
-		return this;
-	},
-
-	animationString:function(forceGenerate){
-		if(!this.options.animationString || forceGenerate===true){
-			this.options.animationString = ''+this.name;
-			this.options.animationString += ' '+this.options.duration;
-			this.options.animationString += ' '+this.options.iteration;
-			this.options.animationString += ' '+((this.options.easing) ? this.options.easing : 'linear');
-		}
-
-		return this.options.animationString;
-	},
-
-	keyframes:function(forceGenerate){
-		if(!this.options.keyframeString || forceGenerate===true) {
-			this.options.keyframeString = '@-webkit-keyframes '+this.name+' {';
-
-			$each(this.options.keyframes,function(obj,index){
-				this.options.keyframeString+=index+'% {';
-
-				$each(obj,function(value,key){
-					this.options.keyframeString+=key+':'+value+';';
-				},this);
-
-				this.options.keyframeString+='}';
-			},this);
-
-			this.options.keyframeString+='}';
-		}
-
-		return this.options.keyframeString;
-	}
-});
-
-Fx.Animations = new Class({
+Fx.AnimateEl = new Class({
 	Implements:Options,
 
 	options:{
@@ -88,14 +22,23 @@ Fx.Animations = new Class({
 	initialize:function(el){
 		// Add Webkit Animation Events
 		(function(){
-			if(Element.NativeEvents.animationEnd) return;
+			if(
+				Element.NativeEvents.animationStart &&
+				Element.NativeEvents.animationIteration &&
+				Element.NativeEvents.animationEnd
+			) return;
 
+			Element.NativeEvents.animationStart = 2;
+			Element.NativeEvents.animationIteration = 2;
 			Element.NativeEvents.animationEnd = 2;
-			Element.NativeEvents.webkitAnimationEnd = 2;
-			Element.NativeEvents.webkitAnimationStart = 2;
 
-			Element.Events.set('animationEnd', { base:'webkitAnimationEnd' });
+			Element.NativeEvents.webkitAnimationStart = 2;
+			Element.NativeEvents.webkitAnimationIteration = 2;
+			Element.NativeEvents.webkitAnimationEnd = 2;
+
 			Element.Events.set('animationStart', { base:'webkitAnimationStart' });
+			Element.Events.set('animationIteration', { base:'webkitAnimationIteration' });
+			Element.Events.set('animationEnd', { base:'webkitAnimationEnd' });
 		}).apply(window);
 
 		// Add new stylesheet for keyframe rules
@@ -103,7 +46,7 @@ Fx.Animations = new Class({
 
 		this.stylesheet = document.styleSheets[document.styleSheets.length-1];
 
-		// Prebind all major events.
+		// Prebind all major methods
 		this.addAnimation = this.addAnimation.bind(this);
 		this.removeAnimation = this.removeAnimation.bind(this);
 		this.start = this.start.bind(this);
@@ -113,11 +56,14 @@ Fx.Animations = new Class({
 		this.removeEvent = this.removeEvent.bind(this);
 		this.removeEvents = this.removeEvents.bind(this);
 		this.animationStart = this.animationStart.bindWithEvent(this);
+		this.animationIteration = this.animationIteration.bindWithEvent(this);
 		this.animationEnd = this.animationEnd.bindWithEvent(this);
 
 		this.el = $(el).addEvents({
 
 			animationStart:this.animationStart,
+
+			animationIteration:this.animationIteration,
 
 			animationEnd:this.animationEnd
 		});
@@ -150,12 +96,11 @@ Fx.Animations = new Class({
 
 		return this.Animations[event.event.animationName].fireEvent('start',event);
 	},
-	/*
-	Have to Implement and  perform further testing
-	animIteration:function(){
 
+	animationIteration:function(event){
+		return this.Animations[event.event.animationName].fireEvent('iteration',event);
 	},
-	*/
+
 	animationEnd:function(event){
 		this.animationStatus.running = false;
 
@@ -218,4 +163,3 @@ Fx.Animations = new Class({
 		return this;
 	}
 });
-
