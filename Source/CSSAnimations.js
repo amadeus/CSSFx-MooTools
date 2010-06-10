@@ -3,12 +3,90 @@
 		- A class to generate and execute CSS Animations
 		- Only tested in Safari 5, iPad and iPhone
 */
-var CSSAnimations = new Class({
-	Implements:[Options,Events], // Not sure hot to fully use events in this case. Perhaps create a sub class for an individual animation
+Fx.Animation = new Class({
+	Implements:[Options,Events],
 
-	options:{}, // Not sure what types of options I would like to implement yet...
+	options:{
+		duration:1000,
+		iteration:1,
+		easing:'linear'
+		/*
+			Keyframe API:
+			keyframes:{
+				precentage(number as string):properties(string),
+				precentage(number as string):properties(string)
+			}
+
+			Events:
+			onStart:(function),
+			onIterate:(function), // Not implemented
+			onComplete:(function),
+			onCancel:(function)
+		*/
+	},
+
+	animating:false,
+
+	initialize:function(name,options){
+		this.setOptions(options);
+
+		this.name = name;
+
+		if($type(this.options.duration)==='number')
+			this.options.duration+='ms';
+
+		return this;
+	},
+
+	animationString:function(forceGenerate){
+		if(!this.options.animationString || forceGenerate===true){
+			this.options.animationString = ''+this.name;
+			this.options.animationString += ' '+this.options.duration;
+			this.options.animationString += ' '+this.options.iteration;
+			this.options.animationString += ' '+((this.options.easing) ? this.options.easing : 'linear');
+		}
+
+		return this.options.animationString;
+	},
+
+	keyframes:function(forceGenerate){
+		if(!this.options.keyframeString || forceGenerate===true) {
+			this.options.keyframeString = '@-webkit-keyframes '+this.name+' {';
+
+			$each(this.options.keyframes,function(obj,index){
+				this.options.keyframeString+=index+'% {';
+
+				$each(obj,function(value,key){
+					this.options.keyframeString+=key+':'+value+';';
+				},this);
+
+				this.options.keyframeString+='}';
+			},this);
+
+			this.options.keyframeString+='}';
+		}
+
+		return this.options.keyframeString;
+	}
+});
+
+Fx.Animations = new Class({
+	Implements:Options,
+
+	options:{
+		chain:'ignore'
+	},
+
+
+	Animations:{},
+
+	animationStatus:{
+		running:false,
+		name:null
+	},
 
 	initialize:function(el){
+		// Add Webkit Animation Events
 		(function(){
 			if(Element.NativeEvents.animationEnd) return;
 
@@ -20,16 +98,20 @@ var CSSAnimations = new Class({
 			Element.Events.set('animationStart', { base:'webkitAnimationStart' });
 		}).apply(window);
 
-		this.body = $(document.body);
-
+		// Add new stylesheet for keyframe rules
 		new Element('style',{ type:'text/css' }).inject($$('head')[0]);
 
 		this.stylesheet = document.styleSheets[document.styleSheets.length-1];
 
+		// Prebind all major events.
 		this.addAnimation = this.addAnimation.bind(this);
 		this.removeAnimation = this.removeAnimation.bind(this);
 		this.start = this.start.bind(this);
-
+		this.cancel = this.cancel.bind(this);
+		this.addEvent = this.addEvent.bind(this);
+		this.addEvents = this.addEvents.bind(this);
+		this.removeEvent = this.removeEvent.bind(this);
+		this.removeEvents = this.removeEvents.bind(this);
 		this.animationStart = this.animationStart.bindWithEvent(this);
 		this.animationEnd = this.animationEnd.bindWithEvent(this);
 
@@ -39,94 +121,101 @@ var CSSAnimations = new Class({
 
 			animationEnd:this.animationEnd
 		});
+
+		return this;
 	},
 
 	start:function(animation){
 		if(!this.Animations[animation]) return false;
 
-		this.el.setStyle('webkitAnimation',this.Animations[animation].shortcut);
+		this.el.setStyle('webkitAnimation',this.Animations[animation].animationString());
+
+		return this;
+	},
+
+	cancel:function(){
+		if(this.animationStatus.running===false) return this;
+
+		this.animationStatus.running = false;
+
+		this.el.setStyle('webkitAnimation','');
+
+		return this;
 	},
 
 	animationStart:function(event){
-		this.animating = true;
+		this.animationStatus.running = true;
 
-		if(this.Animations[event.event.animationName].onStart)
-			this.Animations[event.event.animationName].onStart();
+		this.animationStatus.name = event.event.animationName;
+
+		return this.Animations[event.event.animationName].fireEvent('start',event);
 	},
-	/* Have to perform further testing
+	/*
+	Have to Implement and  perform further testing
 	animIteration:function(){
 
 	},
 	*/
 	animationEnd:function(event){
-		this.animating = false;
+		this.animationStatus.running = false;
 
-		if(this.Animations[event.event.animationName].onComplete)
-			this.Animations[event.event.animationName].onComplete();
+		return this.Animations[event.event.animationName].fireEvent('complete',event);
 	},
 
-	Animations:{},
+	addEvent:function(anim,type,func){
+		if(!this.Animations[anim]) return false;
 
-	/*{ animObj Reference
-		duration:(string),
-		iteration:(string),
-		keyframes:{
-			precentage(number as string):properties(string),
-			precentage(number as string):properties(string)
-		},
-		easing:(string),
-		onStart:(function),
-		onIterate:(function), // Not implemented
-		onComplete:(function)
-	}*/
-	addAnimation:function(name,anim){ // TODO: Remove $merge and test for or provide better data
+		this.Animations[anim].addEvent(type,func);
+
+		return this;
+	},
+
+	addEvents:function(anim,obj){
+		if(!this.Animations[anim]) return false;
+
+		this.Animations[anim].addEvents(obj);
+
+		return this;
+	},
+
+	removeEvent:function(anim,type,func){
+		if(!this.Animations[anim]) return false;
+
+		this.Animations[anim].removeEvent(type,func);
+
+		return this;
+	},
+
+	removeEvents:function(anim,obj){
+		if(!this.Animations[anim]) return false;
+
+		this.Animations[anim].removeEvents(obj);
+
+		return this;
+	},
+
+	addAnimation:function(name,anim){
 		if(this.Animations[name]) return false;
 
-		this.Animations[name] = $merge(anim);
+		anim.ruleIndex = this.stylesheet.cssRules.length;
 
-		this.Animations[name].string = this.generateKeyframes(name,this.Animations[name].keyframes);
+		this.Animations[name] = new Fx.Animation(name,anim);
 
-		this.Animations[name].shortcut = this.generateShortcut(name);
+		this.stylesheet.insertRule(this.Animations[name].keyframes(),anim.ruleIndex);
 
-		this.Animations[name].ruleIndex = this.stylesheet.cssRules.length;
-
-		this.stylesheet.insertRule(this.Animations[name].string,this.Animations[name].ruleIndex);
+		return this;
 	},
 
-	generateShortcut:function(name){
-		var shortcut = ''+name;
+	removeAnimation:function(anim){
+		if(!this.Animations[anim]) return false;
 
-		shortcut += ' '+this.Animations[name].duration;
-		shortcut += ' '+this.Animations[name].iteration;
-		shortcut += ' '+((this.Animations[name].easing) ? this.Animations[name].easing : 'linear');
+		this.Animations[anim].removeEvents();
 
-		return shortcut;
-	},
+		this.stylesheet.deleteRule(this.Animations[anim].options.ruleIndex);
 
-	generateKeyframes:function(name,keyframes){
-		var keyframeString = '@-webkit-keyframes '+name+' {';
+		delete this.Animations[anim];
 
-		$each(keyframes,function(obj,index){
-			keyframeString+=index+'% {';
-
-			$each(obj,function(value,key){
-				keyframeString+=key+':'+value+';';
-			},this);
-
-			keyframeString+='}';
-		},this);
-
-		keyframeString+='}';
-
-		return keyframeString;
-	},
-
-	removeAnimation:function(key){
-		if(!this.Animations[key]) return false;
-
-		this.stylesheet.deleteRule(this.Animations[key].ruleIndex);
-		delete this.Animations[key];
-
-		return true;
+		return this;
 	}
 });
+

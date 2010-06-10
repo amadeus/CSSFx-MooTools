@@ -29,6 +29,10 @@ html, body {
 	display:block;
 }
 
+* {
+	-webkit-tap-highlight-color: rgba(0,0,0,0); 
+}
+
 body {
 	-webkit-transform-origin:50% 50% 0px;
 	-webkit-transform:translate3d(0,0,0);
@@ -53,6 +57,8 @@ body {
 	left:0;
 	-webkit-backface-visibility:hidden;
 	cursor:pointer;
+	background-image:url(bg_test.jpg);
+	-webkit-background-size:100% 100%;
 }
 
 .Template.cube .face h1 {
@@ -79,8 +85,8 @@ body {
 }
 
 .Template.cube .face:active h1 {
-	margin-top:-48px;
-	text-shadow:0 0px 0 #000;
+	margin-top:-49px;
+	text-shadow:0 -1px 0 #000;
 }
 
 .Template.cube .face.one { background-color:#0B55F2; }

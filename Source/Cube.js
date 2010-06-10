@@ -31,10 +31,10 @@ var Cube = new Class({
 	},
 
 	addAnimations:function(){
-		this.animation = new CSSAnimations(this.template);
+		this.animation = new Fx.Animations(this.template);
 
 		this.animation.addAnimation('rotateOne',{
-			duration:'1000ms',
+			duration:'10000ms',
 			easing:'ease-in-out',
 			iteration:1,
 			onStart:(function(){
