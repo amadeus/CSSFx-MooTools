@@ -5,10 +5,13 @@
 */
 var CSSAnimations = new Class({
 	Implements:[Options,Events], // Not sure hot to fully use events in this case. Perhaps create a sub class for an individual animation
+
 	options:{}, // Not sure what types of options I would like to implement yet...
+
 	initialize:function(el){
 		(function(){
 			if(Element.NativeEvents.animationEnd) return;
+
 			Element.NativeEvents.animationEnd = 2;
 			Element.NativeEvents.webkitAnimationEnd = 2;
 			Element.NativeEvents.webkitAnimationStart = 2;
@@ -25,23 +28,28 @@ var CSSAnimations = new Class({
 
 		this.addAnimation = this.addAnimation.bind(this);
 		this.removeAnimation = this.removeAnimation.bind(this);
-		this.animationStart = this.animationStart.bindWithEvent(this);
-		this.animationEnd = this.animationEnd.bindWithEvent(this);
 		this.start = this.start.bind(this);
 
+		this.animationStart = this.animationStart.bindWithEvent(this);
+		this.animationEnd = this.animationEnd.bindWithEvent(this);
+
 		this.el = $(el).addEvents({
+
 			animationStart:this.animationStart,
+
 			animationEnd:this.animationEnd
 		});
 	},
 
 	start:function(animation){
 		if(!this.Animations[animation]) return false;
+
 		this.el.setStyle('webkitAnimation',this.Animations[animation].shortcut);
 	},
 
 	animationStart:function(event){
 		this.animating = true;
+
 		if(this.Animations[event.event.animationName].onStart)
 			this.Animations[event.event.animationName].onStart();
 	},
@@ -52,6 +60,7 @@ var CSSAnimations = new Class({
 	*/
 	animationEnd:function(event){
 		this.animating = false;
+
 		if(this.Animations[event.event.animationName].onComplete)
 			this.Animations[event.event.animationName].onComplete();
 	},
@@ -99,9 +108,11 @@ var CSSAnimations = new Class({
 
 		$each(keyframes,function(obj,index){
 			keyframeString+=index+'% {';
+
 			$each(obj,function(value,key){
 				keyframeString+=key+':'+value+';';
 			},this);
+
 			keyframeString+='}';
 		},this);
 
