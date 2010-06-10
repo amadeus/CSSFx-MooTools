@@ -1,3 +1,8 @@
+/**
+	CSSAnimations [class]
+		- A class to generate and execute CSS Animations
+		- Only tested in Safari 5 and iPhone. Seems broken on iPad Safari, for some reason
+*/
 var CSSAnimations = new Class({
 	Implements:Options,
 	options:{},

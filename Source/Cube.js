@@ -1,3 +1,8 @@
+/**
+	Cube [class]
+		- A temporary class to generate a 3D cube using webkit CSS Transforms and some divs
+		- It also instantiates the CSSAnimation class and generates a couple dynamic animations, based on the browser window size
+*/
 var Cube = new Class({
 
 	faces:[],
