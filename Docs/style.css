@@ -55,18 +55,6 @@ body {
 	cursor:pointer;
 }
 
-/*
-.Template.cube .shadow {
-	position:absolute;
-	top:0;
-	left:0;
-	background-color:#000;
-	-webkit-transform-origin:50% 50% 0px;
-	-webkit-backface-visibility:visible;
-	opacity:.5;
-}
-*/
-
 .Template.cube .face h1 {
 
 	color:#fff;
@@ -99,3 +87,10 @@ body {
 .Template.cube .face.two { background-color:#1DF20B; }
 .Template.cube .face.three { background-color:#FA078A; }
 .Template.cube .face.four {	background-color:#FA07F1; }
+
+@media only screen and (device-width: 320px) {
+.Template.cube .face h1 {
+	font-size:50px;
+	line-height:50px;
+}
+}

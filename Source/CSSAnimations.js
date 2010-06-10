@@ -1,11 +1,11 @@
 /**
 	CSSAnimations [class]
 		- A class to generate and execute CSS Animations
-		- Only tested in Safari 5 and iPhone. Seems broken on iPad Safari, for some reason
+		- Only tested in Safari 5, iPad and iPhone
 */
 var CSSAnimations = new Class({
-	Implements:[Options,Events],
-	options:{},
+	Implements:[Options,Events], // Not sure hot to fully use events in this case. Perhaps create a sub class for an individual animation
+	options:{}, // Not sure what types of options I would like to implement yet...
 	initialize:function(el){
 		(function(){
 			if(Element.NativeEvents.animationEnd) return;
@@ -45,7 +45,7 @@ var CSSAnimations = new Class({
 		if(this.Animations[event.event.animationName].onStart)
 			this.Animations[event.event.animationName].onStart();
 	},
-	/*
+	/* Have to perform further testing
 	animIteration:function(){
 
 	},
@@ -58,24 +58,20 @@ var CSSAnimations = new Class({
 
 	Animations:{},
 
-	/*{ API Reference
-		name:(string),
+	/*{ animObj Reference
 		duration:(string),
 		iteration:(string),
 		keyframes:{
-			precentage(string):properties(string),
-			precentage(string):properties(string)
+			precentage(number as string):properties(string),
+			precentage(number as string):properties(string)
 		},
 		easing:(string),
 		onStart:(function),
 		onIterate:(function), // Not implemented
 		onComplete:(function)
 	}*/
-	addAnimation:function(anim){
-		var name = anim.name;
+	addAnimation:function(name,anim){ // TODO: Remove $merge and test for or provide better data
 		if(this.Animations[name]) return false;
-
-		delete anim.name;
 
 		this.Animations[name] = $merge(anim);
 
@@ -93,7 +89,7 @@ var CSSAnimations = new Class({
 
 		shortcut += ' '+this.Animations[name].duration;
 		shortcut += ' '+this.Animations[name].iteration;
-		shortcut += ' '+this.Animations[name].easing;
+		shortcut += ' '+((this.Animations[name].easing) ? this.Animations[name].easing : 'linear');
 
 		return shortcut;
 	},

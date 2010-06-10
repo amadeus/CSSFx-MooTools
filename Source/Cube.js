@@ -33,8 +33,7 @@ var Cube = new Class({
 	addAnimations:function(){
 		this.animation = new CSSAnimations(this.template);
 
-		this.animation.addAnimation({
-			name:'rotateOne',
+		this.animation.addAnimation('rotateOne',{
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
@@ -49,8 +48,7 @@ var Cube = new Class({
 			}
 		});
 
-		this.animation.addAnimation({
-			name:'rotateTwo',
+		this.animation.addAnimation('rotateTwo',{
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
@@ -65,8 +63,7 @@ var Cube = new Class({
 			}
 		});
 
-		this.animation.addAnimation({
-			name:'rotateThree',
+		this.animation.addAnimation('rotateThree',{
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,
@@ -81,8 +78,7 @@ var Cube = new Class({
 			}
 		});
 
-		this.animation.addAnimation({
-			name:'rotateFour',
+		this.animation.addAnimation('rotateFour',{
 			duration:'1000ms',
 			easing:'ease-in-out',
 			iteration:1,

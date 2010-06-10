@@ -5,4 +5,7 @@ A Basic MooTools Class to dynamically create Webkit CSS Animations.
 
 Known Issues
 ===========
-ONLY TESTED IN SAFARI 5!
+
+Only tested in Safari 5, iPad and iPhone.
+
+WILL NOT WORK IN CHROME (at least the 3d example provided).
