@@ -44,37 +44,38 @@ body {
 	position:absolute;
 	-webkit-transform-origin:50% 50% 0px;
 	-webkit-transform-style:preserve-3d;
-	/*-webkit-transform:translate3d(0,0,-600px) rotateY(0deg) !important;*/
 	top:0;
 	left:0;
-	/*
-	background-color:rgba(255,0,0,.3);*/
-	/*-webkit-animation:testRotate 5000ms infinite ease-in-out;*/
 }
 
 .Template.cube .face {
 	position:absolute;
 	top:0;
 	left:0;
+	-webkit-backface-visibility:hidden;
+	cursor:pointer;
+}
+
+.Template.cube .face h1 {
 	color:#fff;
-	font-size:200px;
+	margin-top:-50px;
+	font-size:100px;
+	line-height:100px;
 	font-weight:bold;
 	text-align:center;
-	-webkit-backface-visibility:visible;
+	position:absolute;
+	width:100%;
+	top:50%;
+	text-transform:lowercase;
+	text-shadow:0 1px 0 #000;
 }
 
-.Template.cube .face.one {
-	background-color:red;
+.Template.cube .face:active h1 {
+	margin-top:-48px;
+	text-shadow:0 0px 0 #000;
 }
 
-.Template.cube .face.two {
-	background-color:blue;
-}
-
-.Template.cube .face.three {
-	background-color:yellow;
-}
-
-.Template.cube .face.four {
-	background-color:orange;
-}
+.Template.cube .face.one { background-color:#0B55F2; }
+.Template.cube .face.two { background-color:#1DF20B; }
+.Template.cube .face.three { background-color:#FA078A; }
+.Template.cube .face.four {	background-color:#FA07F1; }

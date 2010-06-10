@@ -21,10 +21,13 @@ var Cube = new Class({
 		this.faces[1] = this.createFace('two');
 		this.faces[2] = this.createFace('three');
 		this.faces[3] = this.createFace('four');
-
+		
+		this.addAnimations();
+	},
+	
+	addAnimations:function(){
 		this.animation = new CSSAnimations(this.template);
-		
-		
+
 		this.animation.addAnimation({
 			name:'rotateOne',
 			duration:'1000ms',
@@ -40,7 +43,7 @@ var Cube = new Class({
 				'100':{ '-webkit-transform':'translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-90deg)' }
 			}
 		});
-		
+
 		this.animation.addAnimation({
 			name:'rotateTwo',
 			duration:'1000ms',
@@ -56,7 +59,7 @@ var Cube = new Class({
 				'100':{ '-webkit-transform':'translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-180deg)' }
 			}
 		});
-		
+
 		this.animation.addAnimation({
 			name:'rotateThree',
 			duration:'1000ms',
@@ -72,7 +75,7 @@ var Cube = new Class({
 				'100':{ '-webkit-transform':'translate3d(0,0,'+-this.windowInfo.halfX+'px) rotateY(-270deg)' }
 			}
 		});
-		
+
 		this.animation.addAnimation({
 			name:'rotateFour',
 			duration:'1000ms',
@@ -93,7 +96,7 @@ var Cube = new Class({
 	createFace:function(num){
 		return new Element('div',{
 			'class':'face '+num,
-			text:'This is face '+num,
+			html:'<h1>This is face '+num+'</h1>',
 			styles:{
 				width:this.windowInfo.x,
 				height:this.windowInfo.y,
@@ -138,14 +141,14 @@ var Cube = new Class({
 
 	changeFace:function(e,val){
 		if(e && e.stop) e.stop();
-		//console.log(this.template);
+
 		if(val==='one')
 			this.animation.start('rotateOne');
 		if(val==='two')
 			this.animation.start('rotateTwo');
-		if(val==='three') 
+		if(val==='three')
 			this.animation.start('rotateThree');
-		if(val==='four') 
+		if(val==='four')
 			this.animation.start('rotateFour');
 	},
 
@@ -177,6 +180,8 @@ var CSSAnimations = new Class({
 		}).apply(window);
 
 		this.body = $(document.body);
+		this.head = $$('head')[0];
+
 		this.addAnimation = this.addAnimation.bind(this);
 		this.removeAnimation = this.removeAnimation.bind(this);
 		this.start = this.start.bind(this);
@@ -192,74 +197,81 @@ var CSSAnimations = new Class({
 	},
 
 	start:function(animation){
+		if(!this.Animations[animation]) return false;
 		this.el.setStyle('webkitAnimation',this.Animations[animation].shortcut);
 	},
 
 	animationStart:function(event){
-		console.log(event);
+		this.animating = true;
 	},
 	/*
 	animIteration:function(){
 
-	},*/
-
+	},
+	*/
 	animationEnd:function(event){
-		console.log('endEvent:');
-		console.log(event);
+		this.animating = false;
 		if(this.Animations[event.event.animationName].onComplete)
 			this.Animations[event.event.animationName].onComplete();
-		//this.el.setStyle('webkitAnimation','');
 	},
 
 	Animations:{},
 
+	/*{ API Reference
+		name:(string),
+		duration:(string),
+		iteration:(string),
+		keyframes:{
+			precentage(string):properties(string),
+			precentage(string):properties(string)
+		},
+		easing:(string),
+		onStart:(function),
+		onIterate:(function), // Not implemented
+		onComplete:(function)
+	}*/
 	addAnimation:function(anim){
-		/*{
-			name:(string),
-			duration:(string),
-			iteration:(string),
-			keyframes:{
-				precentage(string):properties(string),
-				precentage(string):properties(string)
-			},
-			easing:(string),
-			onStart:(function),
-			onIterate:(function),
-			onComplete:(function)
-		}*/
-
 		var name = anim.name;
 		if(this.Animations[name]) return false;
+
 		delete anim.name;
 
 		this.Animations[name] = $merge(anim);
 
-		var animationString = '@-webkit-keyframes '+name+' {';
+		this.Animations[name].string = this.generateKeyframes(name,this.Animations[name].keyframes);
 
-		$each(this.Animations[name].keyframes,function(obj,index){
-			animationString+=index+'%{';
-			$each(obj,function(value,key){
-				animationString+=key+':'+value+';';
-			},this);
-			animationString+='}';
-		},this);
-
-		animationString+='}';
-
-		this.Animations[name].string = animationString;
-
-		this.Animations[name].shortcut = '';
-
-		this.Animations[name].shortcut += name;
-		this.Animations[name].shortcut += ' '+this.Animations[name].duration;
-		this.Animations[name].shortcut += ' '+this.Animations[name].iteration;
-		this.Animations[name].shortcut += ' '+this.Animations[name].easing;
+		this.Animations[name].shortcut = this.generateShortcut(name);
 
 		this.Animations[name].stylesheet = new Element('style',{
 			type:'text/css',
 			html:this.Animations[name].string
-		}).inject($$('head')[0]);
+		}).inject(this.head);
+	},
 
+	generateShortcut:function(name){
+		var shortcut = ''+name;
+
+		shortcut += ' '+this.Animations[name].duration;
+		shortcut += ' '+this.Animations[name].iteration;
+		shortcut += ' '+this.Animations[name].easing;
+
+		return shortcut;
+	},
+
+	generateKeyframes:function(name,keyframes){
+		var keyframeString = '@-webkit-keyframes '+name+' {';
+
+		$each(keyframes,function(obj,index){
+			keyframeString+=index+'%{';
+			$each(obj,function(value,key){
+				keyframeString+=key+':'+value+';';
+			},this);
+			keyframeString+='}';
+		},this);
+
+		keyframeString+='}';
+
+		return keyframeString;
 	},
 
 	removeAnimation:function(key){
