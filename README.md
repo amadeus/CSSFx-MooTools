@@ -3,6 +3,8 @@ CSSAnimations
 
 A Basic MooTools Class to dynamically create Webkit CSS Animations.
 
+Check out example.html in the /Docs folder of the Class in action.
+
 Known Issues
 ===========
 
