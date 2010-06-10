@@ -142,7 +142,7 @@ var Cube = new Class({
 
 	changeFace:function(e,val){
 		if(e && e.stop) e.stop();
-
+		if(this.animation.animating===true) return;
 		if(val==='one')
 			this.animation.start('rotateOne');
 		if(val==='two')
