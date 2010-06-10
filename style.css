@@ -1,0 +1,80 @@
+/* @override http://amadeus.local/style.css */
+
+/* @group CSS Reset & Font Face*/
+/* html5doctor.com Reset Stylesheet, v1.4, 2009-07-27, Author: Richard Clark - http://richclarkdesign.com */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,hgroup,menu,nav,section,time,mark,audio,video
+{ margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent; }
+body { line-height:1; }
+article,aside,dialog,figure,footer,header,hgroup,nav,section { display:block; }
+ul,ol { list-style:none; }
+blockquote,q { quotes:none; }
+blockquote:before, blockquote:after,
+q:before,q:after { content:'';content:none; }
+a { margin:0;padding:0;border:0;font-size:100%;vertical-align:baseline;background:transparent; }
+ins { background-color:#ff9;color:#000;text-decoration:none; }
+mark { background-color:#ff9;color:#000;font-style:italic;font-weight:bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom:1px dotted #000;cursor:help; }
+table { border-collapse:collapse;border-spacing:0; }
+hr { display:block;height:1px;border:0;border-top:1px solid #cccccc;margin:1em 0;padding:0; }
+input, select { vertical-align:middle; }
+/* @end */
+/* @group General */
+html, body {
+	font:bold 12px/1.4 Helvetica,Arial,sans-serif;
+	background:#000;
+	color:#fff;
+	position:relative;
+	height:100%;
+	width:100%;
+	overflow:hidden;
+	display:block;
+}
+
+body {
+	-webkit-transform-origin:50% 50% 0px;
+	-webkit-transform:translate3d(0,0,0);
+	-webkit-transform-style:preserve-3d;
+	-webkit-perspective:1500;
+	background-image:-webkit-gradient(radial, 50% 50%, 850, 50% 50%, 0, from(#222), to(#787878));
+}
+/* @end */
+
+.Template.cube {
+	position:absolute;
+	-webkit-transform-origin:50% 50% 0px;
+	-webkit-transform-style:preserve-3d;
+	/*-webkit-transform:translate3d(0,0,-600px) rotateY(0deg) !important;*/
+	top:0;
+	left:0;
+	/*
+	background-color:rgba(255,0,0,.3);*/
+	/*-webkit-animation:testRotate 5000ms infinite ease-in-out;*/
+}
+
+.Template.cube .face {
+	position:absolute;
+	top:0;
+	left:0;
+	color:#fff;
+	font-size:200px;
+	font-weight:bold;
+	text-align:center;
+	-webkit-backface-visibility:visible;
+}
+
+.Template.cube .face.one {
+	background-color:red;
+}
+
+.Template.cube .face.two {
+	background-color:blue;
+}
+
+.Template.cube .face.three {
+	background-color:yellow;
+}
+
+.Template.cube .face.four {
+	background-color:orange;
+}
