@@ -70,6 +70,8 @@ Fx.AnimateEl = new Class({
 	},
 
 	animationStart:function(event){
+		if(!this.Animations[event.event.animationName]) return;
+
 		this.animationStatus.running = true;
 
 		this.animationStatus.name = event.event.animationName;
@@ -78,10 +80,14 @@ Fx.AnimateEl = new Class({
 	},
 
 	animationIteration:function(event){
+		if(!this.Animations[event.event.animationName]) return;
+
 		return this.Animations[event.event.animationName].fireEvent('iteration',event);
 	},
 
 	animationEnd:function(event){
+		if(!this.Animations[event.event.animationName]) return;
+
 		this.animationStatus.running = false;
 
 		return this.Animations[event.event.animationName].fireEvent('complete',event);
@@ -127,6 +133,25 @@ Fx.AnimateEl = new Class({
 		this.Animations[name] = new Fx.Animation(name,anim);
 
 		this.stylesheet.insertRule(this.Animations[name].keyframes(),anim.ruleIndex);
+
+		return this;
+	},
+
+	updateAnimation:function(name,anim){
+		if(!this.Animations[name])
+			return this.addAnimation(name,anim);
+
+		var index = this.Animations[name].options.ruleIndex;
+
+		this.stylesheet.deleteRule(index);
+
+		this.Animations[name].setOptions(anim);
+
+		this.Animations[name].animationString(true);
+
+		this.Animations[name].keyframes(true);
+
+		this.stylesheet.insertRule(this.Animations[name].keyframes(),index);
 
 		return this;
 	},

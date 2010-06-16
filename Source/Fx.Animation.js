@@ -9,7 +9,8 @@ Fx.Animation = new Class({
 	options:{
 		duration:1000,
 		iteration:1,
-		easing:'linear'
+		easing:'linear',
+		keyframes:{}
 		/*
 			Keyframe API:
 			keyframes:{
@@ -31,17 +32,23 @@ Fx.Animation = new Class({
 		this.setOptions(options);
 
 		this.name = name;
-
+		
+		this.duration = this.duration.bind(this);
+		this.duration();
+		
+		return this;
+	},
+	
+	duration:function(){
 		if($type(this.options.duration)==='number')
 			this.options.duration+='ms';
-
-		return this;
+		return this.options.duration;
 	},
 
 	animationString:function(forceGenerate){
 		if(!this.options.animationString || forceGenerate===true){
 			this.options.animationString = ''+this.name;
-			this.options.animationString += ' '+this.options.duration;
+			this.options.animationString += ' '+this.duration();
 			this.options.animationString += ' '+this.options.iteration;
 			this.options.animationString += ' '+((this.options.easing) ? this.options.easing : 'linear');
 		}
