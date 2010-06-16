@@ -89,6 +89,7 @@ Fx.AnimateEl = new Class({
 		if(!this.Animations[event.event.animationName]) return;
 
 		this.animationStatus.running = false;
+		this.el.setStyle('webkitAnimation','');
 
 		return this.Animations[event.event.animationName].fireEvent('complete',event);
 	},
