@@ -1,0 +1,1 @@
+CSSFx.Morph = new Class({});

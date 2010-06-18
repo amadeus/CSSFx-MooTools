@@ -1,0 +1,1 @@
+CSSFx.Transitions = new Class({});
