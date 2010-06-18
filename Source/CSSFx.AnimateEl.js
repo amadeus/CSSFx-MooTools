@@ -1,9 +1,17 @@
-/**
-	Fx.AnimateEl [class]
-		- A class to execute CSS animations and events on an element
-		- Requires Fx.Animation.js
-		- Only tested in Safari 5, iPad and iPhone
+/*
+---
+
+name: CSSFx.AnimateEl
+
+description: Base class for storing and executing CSS animations on an html object. Will be renamed.
+
+license: MIT-style license.
+
+provides: CSSFx.AnimateEl
+
+...
 */
+
 CSSFx.AnimateEl = new Class({
 	Implements:Options,
 

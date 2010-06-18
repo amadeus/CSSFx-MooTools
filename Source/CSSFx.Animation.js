@@ -1,8 +1,17 @@
-/**
-	Fx.Animation [class]
-		- A class to generate and store css animations and events
-		- Only tested in Safari 5, iPad and iPhone
+/*
+---
+
+name: CSSFx.Animation
+
+description: Basic data handler/store for CSS Animations
+
+license: MIT-style license.
+
+provides: CSSFx.Animation
+
+...
 */
+
 CSSFx.Animation = new Class({
 	Implements:[Options,Events],
 

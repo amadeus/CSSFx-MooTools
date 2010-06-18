@@ -1,3 +1,17 @@
+/*
+---
+
+name: CSSFx
+
+description: Base class with generic events, callbacks etc, for CSSFx sub classes
+
+license: MIT-style license.
+
+provides: CSSFx
+
+...
+*/
+
 var CSSFx = new Class({
 	Implements:[Chain, Options, Events],
 
@@ -114,14 +128,5 @@ var CSSFx = new Class({
 		}
 
 		return false;
-	},
-
-	validateProperty:function(string){
-		if(this.webkitHash[string]) return this.webkitHash[string];
-		else return string;
-	},
-
-	webkitHash:{
-		'webkitTransform':'-webkit-transform'
 	}
 });

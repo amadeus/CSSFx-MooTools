@@ -1,5 +1,21 @@
+/*
+---
+
+name: CSSFx.Tween
+
+description: Nearly identical to Fx.Tween, except animations use CSS Transitions instead
+
+license: MIT-style license.
+
+provides: CSSFx.Tween
+
+...
+*/
+
 CSSFx.Tween = new Class({
 	Extends: CSSFx,
+
+	Implements:[CSSFx.CSS,CSSFx.Transitions],
 
 	initialize:function(element,options){
 		this.element = this.subject = document.id(element);

@@ -14,12 +14,13 @@
 	</style>
 	<script src="mootools.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Source/CSSFx.CSS.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.Tween.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		window.addEvent('domready',function(){
 			var Tweener = new CSSFx.Tween('TweenTest',{
 				duration:2000,
-				link:'chain',
+				link:'cancel',
 				property:'webkitTransform'
 			});
 			
@@ -39,8 +40,8 @@
 </head>
 <body>
 	<div id="TweenTest" class="Module box"></div>
-	<button id="TweenLeft">Move Box Left</button>
+	<button id="TweenLeft">Move Box Left from Current Position</button>
 	<button id="TweenCancel">Cancel</button>
-	<button id="TweenRight">Move Box Right</button>
+	<button id="TweenRight">Move Box Right and Always Start At Left</button>
 </body>
 </html>
