@@ -4,7 +4,69 @@ CSSFx.Tween = new Class({
 	initialize:function(element,options){
 		this.element = this.subject = document.id(element);
 
-		this.parent(options);
+		this.transitionStart = this.transitionStart.bindWithEvent(this);
+		this.transitionEnd = this.transitionEnd.bindWithEvent(this);
 
+		this.parent(options);
+	},
+
+	start:function(property, from, to){
+		var args = $A(arguments), setStart = false;
+
+		if (!this.check(property, from, to)) return this;
+
+		this.property = this.options.property || args.shift();
+
+		if(args.length===1) {
+			args.splice(0,0,this.element.getComputedStyle(this.validateProperty(this.property)));
+		}
+		else setStart = true;
+
+		this.parent(args[0],args[1]);
+
+		if(setStart==true) {
+			this.element.setStyle(this.property,this.from);
+		}
+
+		this.transitionStart.delay(1);
+	},
+
+	cancel:function(){
+		var property = this.validateProperty(this.property);
+
+		this.element.setStyle(this.property,this.element.getComputedStyle(property));
+
+		this.transitionClean();
+
+		this.parent();
+	},
+
+	transitionStart:function(){
+		this.element
+			.addEvent('transitionEnd',this.transitionEnd)
+			.setStyle('webkitTransition',this.transitionProperty());
+
+		this.element.setStyle(this.property,this.to);
+	},
+
+	transitionEnd:function(){
+		this.transitionClean();
+
+		this.onComplete();
+	},
+
+	transitionClean:function(){
+		this.element
+			.removeEvent('transitionEnd',this.transitionEnd)
+			.setStyle('webkitTransition','');
+	},
+
+	transitionProperty:function(){
+		var duration = this.options.duration;
+		if($type(duration)==='number') duration+='ms';
+
+		var property = this.validateProperty(this.property);
+
+		return ''+property+' '+duration+' '+this.options.transition;
 	}
 });

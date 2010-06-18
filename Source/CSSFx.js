@@ -4,7 +4,7 @@ var CSSFx = new Class({
 	options:{
 		link:'ignore',
 		duration:500,
-		transition:'sine:in:out'
+		transition:'ease-in-out'
 		/*
 		Events:
 			onStart:(function),
@@ -21,6 +21,8 @@ var CSSFx = new Class({
 		this.setOptions(options);
 
 		this.onComplete = this.onComplete.bind(this);
+
+		this.addNativeAnimationEvents();
 	},
 
 	set:function(){
@@ -32,12 +34,16 @@ var CSSFx = new Class({
 
 		this.to = to;
 
+		this.running = true;
+
 		this.onStart();
 
 		return this;
 	},
 
 	cancel:function(){
+		this.running = false;
+
 		this.onCancel();
 
 		return this;
@@ -58,22 +64,64 @@ var CSSFx = new Class({
 	onStart:function(){
 		this.fireEvent('start',this.subject);
 	},
-	
+
 	onCancel:function(){
-		this.fireEvent('cancel',this.subject);
+		this.fireEvent('cancel',this.subject).clearChain();;
 	},
-	
+
 	onPause:function(){
 		this.fireEvent('pause',this.subject);
 	},
-	
+
 	onResume:function(){
 		this.fireEvent('resume',this.subject);
 	},
 
 	onComplete:function(){
+		this.running = false;
+
 		this.fireEvent('complete',this.subject);
 
 		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
+	},
+
+	addNativeAnimationEvents:function(){
+		if(
+			Element.NativeEvents.transitionStart &&
+			Element.NativeEvents.transitionEnd
+		) return;
+
+		Element.NativeEvents.transitionStart = 2;
+		Element.NativeEvents.transitionEnd = 2;
+
+		Element.NativeEvents.webkitTransitionStart = 2;
+		Element.NativeEvents.webkitTransitionEnd = 2;
+
+		Element.Events.set('transitionStart', { base:'webkitTransitionStart' });
+		Element.Events.set('transitionEnd', { base:'webkitTransitionEnd' });
+	},
+
+	check:function(){
+		if(this.running!=true) return true;
+
+		switch (this.options.link){
+			case 'cancel':
+				this.cancel();
+				return true;
+			case 'chain':
+				this.chain(this.caller.bind(this, arguments));
+				return false;
+		}
+
+		return false;
+	},
+
+	validateProperty:function(string){
+		if(this.webkitHash[string]) return this.webkitHash[string];
+		else return string;
+	},
+
+	webkitHash:{
+		'webkitTransform':'-webkit-transform'
 	}
 });

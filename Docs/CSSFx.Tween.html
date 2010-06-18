@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>CSSFx.Tween</title>
+	<style type="text/css" media="screen">
+		.Module.box {
+			position:relative;
+			width:100px;
+			height:100px;
+			background-color:blue;
+			margin:20px;
+		}
+	</style>
+	<script src="mootools.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Source/CSSFx.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Source/CSSFx.Tween.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		window.addEvent('domready',function(){
+			var Tweener = new CSSFx.Tween('TweenTest',{
+				duration:2000,
+				link:'chain',
+				property:'webkitTransform'
+			});
+			
+			document.id('TweenLeft').addEvent('click',function(){
+				Tweener.start('translateX(0px)');
+			});
+			
+			document.id('TweenCancel').addEvent('click',function(){
+				Tweener.cancel();
+			});
+			
+			document.id('TweenRight').addEvent('click',function(){
+				Tweener.start('translateX(0px)','translateX(400px)');
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="TweenTest" class="Module box"></div>
+	<button id="TweenLeft">Move Box Left</button>
+	<button id="TweenCancel">Cancel</button>
+	<button id="TweenRight">Move Box Right</button>
+</body>
+</html>
