@@ -1,13 +1,10 @@
 CSSFx
 ===========
 
-A Basic MooTools Class to dynamically create Webkit CSS Animations.
+Essentially the goal of this class is to replicate the MooTools Fx API but take advantage of CSS Transitions instead of JavaScript run animations
 
-Check out example.html in the /Docs folder of the Class in action.
 
 Known Issues
 ===========
 
-Only tested in Safari 5, iPad and iPhone.
-
-WILL NOT WORK IN CHROME (at least the 3d example provided).
+Probably tons. This is still in early development.
