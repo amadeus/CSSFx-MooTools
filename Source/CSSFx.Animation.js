@@ -3,7 +3,7 @@
 		- A class to generate and store css animations and events
 		- Only tested in Safari 5, iPad and iPhone
 */
-Fx.Animation = new Class({
+CSSFx.Animation = new Class({
 	Implements:[Options,Events],
 
 	options:{

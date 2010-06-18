@@ -34,7 +34,7 @@ var Cube = new Class({
 	},
 
 	addAnimations:function(){
-		this.animation = new Fx.AnimateEl(this.template);
+		this.animation = new CSSFx.AnimateEl(this.template);
 
 		this.animation.addAnimation('returnHome',{
 			duration:1000,

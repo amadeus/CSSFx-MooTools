@@ -4,7 +4,7 @@
 		- Requires Fx.Animation.js
 		- Only tested in Safari 5, iPad and iPhone
 */
-Fx.AnimateEl = new Class({
+CSSFx.AnimateEl = new Class({
 	Implements:Options,
 
 	options:{ chain:'ignore' }, // Chaining has not yet been implemented...
@@ -131,7 +131,7 @@ Fx.AnimateEl = new Class({
 
 		anim.ruleIndex = this.stylesheet.cssRules.length;
 
-		this.Animations[name] = new Fx.Animation(name,anim);
+		this.Animations[name] = new CSSFx.Animation(name,anim);
 
 		this.stylesheet.insertRule(this.Animations[name].keyframes(),anim.ruleIndex);
 
