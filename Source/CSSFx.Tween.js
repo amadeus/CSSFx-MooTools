@@ -69,7 +69,7 @@ CSSFx.Tween = new Class({
 
 		this.parent(value);
 		
-		console.log(this.paused);
+		console.log(this);
 	},
 	
 	resume:function(){
