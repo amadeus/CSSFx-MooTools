@@ -63,7 +63,17 @@ var CSSFx = new Class({
 		return this;
 	},
 
-	pause:function(){
+	pause:function(computed){
+		if(this.running===false) return;
+
+		this.running = false;
+
+		this.paused = computed;
+		this.from;
+		this.to;
+		this.options.duration;
+
+
 		this.onPause();
 
 		return this;

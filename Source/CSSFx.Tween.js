@@ -49,12 +49,31 @@ CSSFx.Tween = new Class({
 
 	cancel:function(){
 		var property = this.validateProperty(this.property);
+		var value = this.element.getComputedStyle(property);
 
-		this.element.setStyle(this.property,this.element.getComputedStyle(property));
+		this.element.setStyle(this.property,value);
 
 		this.transitionClean();
 
-		this.parent();
+		this.parent(value);
+	},
+
+	pause:function(){
+		if(this.running===false) return;
+		var property = this.validateProperty(this.property);
+		var value = this.element.getComputedStyle(property);
+
+		this.element.setStyle(this.property,value);
+
+		this.transitionClean();
+
+		this.parent(value);
+		
+		console.log(this.paused);
+	},
+	
+	resume:function(){
+		console.log('weeee!');
 	},
 
 	transitionStart:function(){

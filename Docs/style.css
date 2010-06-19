@@ -51,7 +51,8 @@ body {
 	position:absolute;
 	top:0;
 	left:0;
-	-webkit-backface-visibility:hidden;
+	-webkit-backface-visibility:visible;
+	opacity:.5;
 }
 
 .Template.cube .face h1 {

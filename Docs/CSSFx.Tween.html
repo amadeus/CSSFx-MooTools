@@ -21,19 +21,29 @@
 			var Tweener = new CSSFx.Tween('TweenTest',{
 				duration:2000,
 				link:'cancel',
-				property:'webkitTransform'
+				property:'left',
+				transitionValues:[0.42, 0.0, 0.58,1.0],
+				transition:'cubic-bezier(0.42, 0.0, 0.58, 1.0)'
 			});
 			
 			document.id('TweenLeft').addEvent('click',function(){
-				Tweener.start('translateX(0px)');
+				Tweener.start('0px');
 			});
 			
 			document.id('TweenCancel').addEvent('click',function(){
 				Tweener.cancel();
 			});
 			
+			document.id('TweenPause').addEvent('click',function(){
+				Tweener.pause();
+			});
+			
+			document.id('TweenResume').addEvent('click',function(){
+				Tweener.resume();
+			});
+			
 			document.id('TweenRight').addEvent('click',function(){
-				Tweener.start('translateX(0px)','translateX(400px)');
+				Tweener.start('0px','400px');
 			});
 		});
 	</script>
@@ -42,6 +52,8 @@
 	<div id="TweenTest" class="Module box"></div>
 	<button id="TweenLeft">Move Box Left from Current Position</button>
 	<button id="TweenCancel">Cancel</button>
+	<button id="TweenPause">Pause</button>
+	<button id="TweenResume">Resume</button>
 	<button id="TweenRight">Move Box Right and Always Start At Left</button>
 </body>
 </html>
