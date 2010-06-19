@@ -19,6 +19,8 @@ CSSFx.CSS = new Class({
 	},
 
 	webkitHash:{
-		'webkitTransform':'-webkit-transform'
+		'webkitTransform':'-webkit-transform',
+		'webkitAnimation':'-webkit-animation',
+		'webkitTransition':'-webkit-transition'
 	}
 });

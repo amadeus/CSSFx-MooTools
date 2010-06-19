@@ -18,7 +18,7 @@ var CSSFx = new Class({
 	options:{
 		link:'ignore',
 		duration:500,
-		transition:'ease-in-out'
+		transition:'ease:in:out'
 		/*
 		Events:
 			onStart:(function),
@@ -33,6 +33,12 @@ var CSSFx = new Class({
 		this.subject = this.subject || this;
 
 		this.setOptions(options);
+
+		this.options.transitionValues = this.getTransition(this.options.transition);
+
+		this.options.transitionString = this.getTransitionString(this.options.transition);
+		
+		console.log(this.options.transitionString);
 
 		this.onComplete = this.onComplete.bind(this);
 
@@ -64,7 +70,7 @@ var CSSFx = new Class({
 	},
 
 	pause:function(computed){
-		if(this.running===false) return;
+		if(this.running===false) return this;
 
 		this.running = false;
 
@@ -80,12 +86,18 @@ var CSSFx = new Class({
 
 		return this;
 	},
+	
+	
 
 	resume:function(){
+		if(!this.state) return this;
+		
 		this.onResume();
 		
 		
 		
+
+
 		return this;
 	},
 

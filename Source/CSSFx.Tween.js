@@ -22,6 +22,7 @@ CSSFx.Tween = new Class({
 
 		this.transitionStart = this.transitionStart.bindWithEvent(this);
 		this.transitionEnd = this.transitionEnd.bindWithEvent(this);
+		this.resumeDelay = this.resumeDelay.bind(this);
 
 		this.parent(options);
 	},
@@ -51,9 +52,9 @@ CSSFx.Tween = new Class({
 		var property = this.validateProperty(this.property);
 		var value = this.element.getComputedStyle(property);
 
-		this.element.setStyle(this.property,value);
-
 		this.transitionClean();
+
+		this.element.setStyle(this.property,value);
 
 		this.parent(value);
 	},
@@ -68,12 +69,20 @@ CSSFx.Tween = new Class({
 		this.transitionClean();
 
 		this.parent(value);
-		
+
 		console.log(this);
 	},
-	
+
 	resume:function(){
-		console.log('weeee!');
+		if(!this.state) return this;
+
+		this.resumeDelay.delay(1);
+	},
+
+	resumeDelay:function(){
+		this.element
+			.addEvent('transitionEnd',this.transitionEnd)
+			.setStyle('webkitTransition',this.transitionProperty(this.state));
 	},
 
 	transitionStart:function(){
@@ -93,15 +102,24 @@ CSSFx.Tween = new Class({
 	transitionClean:function(){
 		this.element
 			.removeEvent('transitionEnd',this.transitionEnd)
-			.setStyle('webkitTransition','');
+			.setStyle('webkitTransition','none');
 	},
 
-	transitionProperty:function(){
-		var duration = this.options.duration;
-		if($type(duration)==='number') duration+='ms';
+	transitionProperty:function(state){
+		var property = this.validateProperty(this.property), duration, transitionString;
 
-		var property = this.validateProperty(this.property);
+		if(state){
+			var duration = this.state.duration;
 
-		return ''+property+' '+duration+' '+this.options.transition;
+			transitionString = this.getTransitionString(this.state.cubicBezier);
+		}
+		else {
+			duration = this.options.duration;
+			if($type(duration)==='number') duration+='ms';
+
+			transitionString = this.options.transitionString;
+		}
+
+		return ''+property+' '+duration+' '+transitionString;
 	}
 });

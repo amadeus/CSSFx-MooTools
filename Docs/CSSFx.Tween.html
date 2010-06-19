@@ -15,6 +15,7 @@
 	<script src="mootools.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.CSS.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Source/CSSFx.Transitions.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.Tween.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		window.addEvent('domready',function(){
@@ -22,12 +23,11 @@
 				duration:2000,
 				link:'chain',
 				property:'left',
-				transitionValues:[0.42, 0.0, 0.58,1.0],
-				transition:'cubic-bezier(0.42, 0.0, 0.58, 1)'
+				transition:'quad:in:out'
 			});
 			
 			document.id('TweenLeft').addEvent('click',function(){
-				Tweener.start();
+				Tweener.start(0);
 			});
 			
 			document.id('TweenCancel').addEvent('click',function(){
