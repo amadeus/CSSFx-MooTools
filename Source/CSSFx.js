@@ -68,10 +68,12 @@ var CSSFx = new Class({
 
 		this.running = false;
 
-		this.paused = computed;
-		this.from;
-		this.to;
-		this.options.duration;
+		this.paused = parseInt(computed,10);// Current computed property of element
+		this.property;						// property that is getting animated
+		this.from;							// position where the animation started
+		this.to;							// position where the animation should end
+		this.options.duration;				// Duration of the animation, typically in milliseconds
+		this.options.transitionValues;		// Array of values for the cubic bezier
 
 
 		this.onPause();
@@ -81,7 +83,9 @@ var CSSFx = new Class({
 
 	resume:function(){
 		this.onResume();
-
+		
+		
+		
 		return this;
 	},
 
