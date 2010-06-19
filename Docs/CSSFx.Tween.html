@@ -20,10 +20,10 @@
 		window.addEvent('domready',function(){
 			var Tweener = new CSSFx.Tween('TweenTest',{
 				duration:2000,
-				link:'cancel',
+				link:'chain',
 				property:'left',
 				transitionValues:[0.42, 0.0, 0.58,1.0],
-				transition:'cubic-bezier(0.42, 0.0, 0.58, 1.0)'
+				transition:'cubic-bezier(0.42, 0.0, 0.58, 1)'
 			});
 			
 			document.id('TweenLeft').addEvent('click',function(){
