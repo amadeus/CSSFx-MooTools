@@ -48,9 +48,9 @@ var CSSFx = new Class({
 	},
 
 	start:function(from, to){
-		this.from = from;
+		this.from = parseFloat(from);
 
-		this.to = to;
+		this.to = parseFloat(to);
 
 		this.running = true;
 
@@ -70,19 +70,19 @@ var CSSFx = new Class({
 	pause:function(computed){
 		if(this.running===false) return this;
 
-		this.paused = parseInt(computed,10);
-		
-		delete this.state;
-		
+		this.paused = parseFloat(computed);
+
 		this.state = {
 			to:this.to,
 			from:this.paused,
-			duration:((this.to-this.paused) / (this.to-this.from))*this.options.duration
+			duration:(((this.to-this.paused) / (this.to-this.from))*this.options.duration)
 		};
-		
-		this.state.cubicBezier = this.calculateCubicBezier((this.paused-this.from) / (this.to-this.from),this.options.transitionValues);
-		
-		
+
+		this.state.cubicBezier = this.calculateCubicBezier(Math.abs((this.paused-this.from) / (this.to-this.from)),this.options.transitionValues);
+
+
+		console.log(this.state.duration);
+		console.log((this.paused-this.from) / (this.to-this.from));
 		console.log(this.state.cubicBezier);
 		console.log(this.options.transitionValues);
 
@@ -94,8 +94,8 @@ var CSSFx = new Class({
 	},
 
 	resume:function(){
-		if(!this.state) return this;
-		
+		if(!this.state || this.running===true) return this;
+
 		this.running = true;
 
 		this.onResume();

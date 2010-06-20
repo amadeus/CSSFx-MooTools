@@ -74,9 +74,10 @@ CSSFx.Tween = new Class({
 	},
 
 	resume:function(){
-		if(!this.state) return this;
+		if(!this.state || this.running===true) return this;
 		
 		this.element.setStyle('webkitTransition',this.transitionProperty(this.state));
+		console.log(this.transitionProperty(this.state));
 		
 		this.resumeDelay.delay(1);
 		

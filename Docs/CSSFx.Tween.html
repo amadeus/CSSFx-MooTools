@@ -27,10 +27,11 @@
 	<script>
 		window.addEvent('domready',function(){
 			var Tweener = new CSSFx.Tween('TweenTest',{
-				duration:5000,
+				duration:2000,
 				link:'cancel',
 				property:'left',
-				transition:'quad:in:out'
+				transition:'test'
+				//'quad:in:out'
 			});
 			
 			document.id('TweenLeft').addEvent('click',function(){

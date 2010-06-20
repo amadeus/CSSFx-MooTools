@@ -22,10 +22,10 @@ CSSFx.CubicBezier = new Class({
 		yRange = a3[1] - b3[1];
 
 		return [
-			(c1[0] - b3[0]) / xRange,
-			(c1[1] - b3[1]) / yRange,
-			(c2[0] - b3[0]) / xRange,
-			(c2[1] - b3[1]) / yRange
+			Math.max((c1[0] - b3[0]) / xRange,0),
+			Math.max((c1[1] - b3[1]) / yRange,0),
+			Math.max((c2[0] - b3[0]) / xRange,0),
+			Math.max((c2[1] - b3[1]) / yRange)
 		];
 	}
 });
