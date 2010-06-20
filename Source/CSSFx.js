@@ -77,8 +77,13 @@ var CSSFx = new Class({
 			from:this.paused,
 			duration:(((this.to-this.paused) / (this.to-this.from))*this.options.duration)
 		};
-
-		this.state.cubicBezier = this.calculateCubicBezier(Math.abs((this.paused-this.from) / (this.to-this.from)),this.options.transitionValues);
+		
+		//((this.to-this.paused) / (this.to-this.from));
+		//(this.paused-this.from) / (this.to-this.from);
+		//Math.abs(
+		//(this.paused-this.from) / (this.to-this.from)
+		
+		this.state.cubicBezier = this.calculateCubicBezier(this.determinePercentage(this.from,this.to,this.paused),this.options.transitionValues);
 
 
 		console.log(this.state.duration);

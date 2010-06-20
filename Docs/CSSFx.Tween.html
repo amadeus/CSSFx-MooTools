@@ -28,10 +28,9 @@
 		window.addEvent('domready',function(){
 			var Tweener = new CSSFx.Tween('TweenTest',{
 				duration:2000,
-				link:'cancel',
+				link:'ignore',
 				property:'left',
-				transition:'test'
-				//'quad:in:out'
+				transition:[1,0,0,1]
 			});
 			
 			document.id('TweenLeft').addEvent('click',function(){

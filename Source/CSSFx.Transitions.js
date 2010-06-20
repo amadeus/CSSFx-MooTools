@@ -63,7 +63,6 @@ CSSFx.Transitions = new Class({
 		'quart:in:out':[0.76,0,0.24,1],
 		'quint:in':[0.64,0,0.78,0],
 		'quint:out':[0.22,1,0.35,1],
-		'quint:in:out':[0.9,0,0.1,1],
-		'test':[1,0,0,1]
+		'quint:in:out':[0.9,0,0.1,1]
 	}
 });

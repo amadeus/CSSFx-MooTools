@@ -27,5 +27,9 @@ CSSFx.CubicBezier = new Class({
 			Math.max((c2[0] - b3[0]) / xRange,0),
 			Math.max((c2[1] - b3[1]) / yRange)
 		];
+	},
+	
+	determinePercentage:function(from,to,paused){
+		return (this.paused-this.from) / (this.to-this.from);
 	}
 });
