@@ -9,19 +9,26 @@
 			width:100px;
 			height:100px;
 			background-color:blue;
+		}
+		
+		.container {
 			margin:20px;
+			position:relative;
+			width:900px;
+			background-color:#eee;
 		}
 	</style>
 	<script src="mootools.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.CSS.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Source/CSSFx.CubicBezier.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.Transitions.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Source/CSSFx.Tween.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		window.addEvent('domready',function(){
 			var Tweener = new CSSFx.Tween('TweenTest',{
-				duration:2000,
-				link:'chain',
+				duration:5000,
+				link:'cancel',
 				property:'left',
 				transition:'quad:in:out'
 			});
@@ -43,13 +50,15 @@
 			});
 			
 			document.id('TweenRight').addEvent('click',function(){
-				Tweener.start(0,400);
+				Tweener.start(0,800);
 			});
 		});
 	</script>
 </head>
 <body>
-	<div id="TweenTest" class="Module box"></div>
+	<div class="container">
+		<div id="TweenTest" class="Module box"></div>
+	</div>
 	<button id="TweenLeft">Move Box Left from Current Position</button>
 	<button id="TweenCancel">Cancel</button>
 	<button id="TweenPause">Pause</button>

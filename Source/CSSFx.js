@@ -37,8 +37,6 @@ var CSSFx = new Class({
 		this.options.transitionValues = this.getTransition(this.options.transition);
 
 		this.options.transitionString = this.getTransitionString(this.options.transition);
-		
-		console.log(this.options.transitionString);
 
 		this.onComplete = this.onComplete.bind(this);
 
@@ -72,31 +70,35 @@ var CSSFx = new Class({
 	pause:function(computed){
 		if(this.running===false) return this;
 
+		this.paused = parseInt(computed,10);
+		
+		delete this.state;
+		
+		this.state = {
+			to:this.to,
+			from:this.paused,
+			duration:((this.to-this.paused) / (this.to-this.from))*this.options.duration
+		};
+		
+		this.state.cubicBezier = this.calculateCubicBezier((this.paused-this.from) / (this.to-this.from),this.options.transitionValues);
+		
+		
+		console.log(this.state.cubicBezier);
+		console.log(this.options.transitionValues);
+
 		this.running = false;
-
-		this.paused = parseInt(computed,10);// Current computed property of element
-		this.property;						// property that is getting animated
-		this.from;							// position where the animation started
-		this.to;							// position where the animation should end
-		this.options.duration;				// Duration of the animation, typically in milliseconds
-		this.options.transitionValues;		// Array of values for the cubic bezier
-
 
 		this.onPause();
 
 		return this;
 	},
-	
-	
 
 	resume:function(){
 		if(!this.state) return this;
 		
-		this.onResume();
-		
-		
-		
+		this.running = true;
 
+		this.onResume();
 
 		return this;
 	},

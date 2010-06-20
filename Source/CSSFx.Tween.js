@@ -15,13 +15,15 @@ provides: CSSFx.Tween
 CSSFx.Tween = new Class({
 	Extends: CSSFx,
 
-	Implements:[CSSFx.CSS,CSSFx.Transitions],
+	Implements:[CSSFx.CSS,CSSFx.Transitions,CSSFx.CubicBezier],
 
 	initialize:function(element,options){
 		this.element = this.subject = document.id(element);
 
 		this.transitionStart = this.transitionStart.bindWithEvent(this);
 		this.transitionEnd = this.transitionEnd.bindWithEvent(this);
+
+		this.resume = this.resume.bindWithEvent(this);
 		this.resumeDelay = this.resumeDelay.bind(this);
 
 		this.parent(options);
@@ -69,20 +71,24 @@ CSSFx.Tween = new Class({
 		this.transitionClean();
 
 		this.parent(value);
-
-		console.log(this);
 	},
 
 	resume:function(){
 		if(!this.state) return this;
-
+		
+		this.element.setStyle('webkitTransition',this.transitionProperty(this.state));
+		
 		this.resumeDelay.delay(1);
+		
+		this.parent();
 	},
 
 	resumeDelay:function(){
 		this.element
 			.addEvent('transitionEnd',this.transitionEnd)
-			.setStyle('webkitTransition',this.transitionProperty(this.state));
+			.setStyle(this.property,this.to);
+		
+		delete this.state;
 	},
 
 	transitionStart:function(){
@@ -109,7 +115,7 @@ CSSFx.Tween = new Class({
 		var property = this.validateProperty(this.property), duration, transitionString;
 
 		if(state){
-			var duration = this.state.duration;
+			var duration = this.state.duration+'ms';
 
 			transitionString = this.getTransitionString(this.state.cubicBezier);
 		}
@@ -119,7 +125,7 @@ CSSFx.Tween = new Class({
 
 			transitionString = this.options.transitionString;
 		}
-
+		
 		return ''+property+' '+duration+' '+transitionString;
 	}
 });
